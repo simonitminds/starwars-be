@@ -1,0 +1,23 @@
+{
+  "name": "sw-be",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "ts-node-dev --respawn --transpileOnly src/index.ts",
+    "migrate:dev": "prisma migrate dev --name"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@pothos/core": "^4.2.0",
+    "@prisma/client": "^5.19.1",
+    "graphql-yoga": "^5.7.0",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.6.2"
+  },
+  "devDependencies": {
+    "prisma": "^5.19.1"
+  }
+}

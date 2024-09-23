@@ -18,8 +18,11 @@ datasource db {
 model User {
   id    Int     @id @default(autoincrement())
   name  String  @unique
+  wallet Float
   items Item[]
+  role  String
 }
+
 
 model Item {
   id       Int    @id @default(autoincrement())
@@ -29,4 +32,5 @@ model Item {
   description String
   user     User   @relation(fields: [userId], references: [id])
   userId   Int
+  forSale  Boolean
 }

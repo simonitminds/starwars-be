@@ -9,6 +9,7 @@ builder.prismaObject("Item", {
     price: t.exposeFloat("price"),
     description: t.exposeString("description"),
     user: t.relation("user"),
+    forSale: t.exposeBoolean("forSale"),
   }),
 });
 
@@ -18,6 +19,7 @@ interface ItemInputObject {
   price: number;
   description: string;
   userId: number;
+  forSale: boolean;
 }
 
 const itemInputRef = builder.inputType("ItemInput", {
@@ -28,6 +30,7 @@ const itemInputRef = builder.inputType("ItemInput", {
     price: t.float({ required: true }),
     description: t.string({ required: true }),
     userId: t.int({ required: true }),
+    forSale: t.boolean({ required: true }),
   }),
 });
 

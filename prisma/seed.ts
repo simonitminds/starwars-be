@@ -2,7 +2,7 @@ import { PrismaClient, Prisma } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-async function main() {
+(async function main() {
   const user1 = await prisma.user.create({
     data: {
       name: "Watto",
@@ -43,4 +43,4 @@ async function main() {
   });
 
   console.log("Data seeded successfully!");
-}
+})();

@@ -19,6 +19,21 @@ builder.queryType({
       },
     }),
 
+    //Get items by user id
+    itemsByUser: t.prismaField({
+      type: ["Item"],
+      args: {
+        userId: t.arg.int({ required: true }),
+      },
+      resolve: (p, _, args, ctx) => {
+        return prisma.item.findMany({
+          where: {
+            userId: args.userId,
+          },
+        });
+      },
+    }),
+
     //Get a user by id
     item: t.prismaField({
       type: "Item",
@@ -41,19 +56,6 @@ export const omega_token_secret =
 
 export const a = builder.mutationType({
   fields: (t) => ({
-    //Create a new user
-    createUser: t.prismaField({
-      type: "User",
-      args: {
-        name: t.arg.string({ required: true }),
-      },
-      resolve: (q, _, args, {}) => {
-        return prisma.user.create({
-          data: args,
-        });
-      },
-    }),
-
     //Create a new item
     createItem: t.prismaField({
       type: "Item",
@@ -63,12 +65,16 @@ export const a = builder.mutationType({
         price: t.arg.float({ required: true }),
         description: t.arg.string({ required: true }),
         userId: t.arg.int({ required: true }),
+        forSale: t.arg.boolean({ required: true }),
       },
-      resolve: async (q, _, p) => {
+      resolve: async (q, _, args, ctx) => {
+        if (ctx.user.role !== "ADMIN") {
+          throw new Error("You are not authorized to create an item");
+        }
         console.log(q);
         return prisma.item.create({
           data: {
-            ...p,
+            ...args,
           },
         });
       },

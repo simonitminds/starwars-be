@@ -6,6 +6,15 @@ const prisma = new PrismaClient();
   const user1 = await prisma.user.create({
     data: {
       name: "Watto",
+      wallet: 100000,
+      role: "ADMIN",
+    },
+  });
+  const user2 = await prisma.user.create({
+    data: {
+      name: "Luke",
+      wallet: 10000,
+      role: "USER",
     },
   });
 
@@ -17,6 +26,7 @@ const prisma = new PrismaClient();
         price: 5000,
         description: "Good quality blue crystal",
         userId: user1.id,
+        forSale: true,
       },
       {
         name: "Silver hilt",
@@ -24,6 +34,7 @@ const prisma = new PrismaClient();
         price: 1000,
         description: "Metal hilt for lightsabers",
         userId: user1.id,
+        forSale: true,
       },
       {
         name: "Gold hilt",
@@ -31,6 +42,7 @@ const prisma = new PrismaClient();
         price: 8000,
         description: "Golden hilt, very rare",
         userId: user1.id,
+        forSale: false,
       },
       {
         name: "Green crystal",
@@ -38,6 +50,7 @@ const prisma = new PrismaClient();
         price: 4500,
         description: "Good quality green crystal",
         userId: user1.id,
+        forSale: true,
       },
     ],
   });

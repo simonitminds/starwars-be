@@ -1,15 +1,14 @@
 import { createYoga } from 'graphql-yoga';
 import { createServer } from 'node:http';
-import { schema } from './schema';
-import { PrismaClient } from '@prisma/client';
+import { builder } from './schema';
 
 
-const prisma = new PrismaClient();
+builder.queryType({});
+builder.mutationType({});
+
 const yoga = createYoga({
-  schema: schema,
-  context: (req) => ({
-    db: prisma,
-  })
+  schema: builder.toSchema(),
+  context: (req) => ({})
 });
 
 const server = createServer(yoga);

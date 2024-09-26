@@ -1,42 +1,23 @@
 import SchemaBuilder from '@pothos/core';
 import { PrismaClient } from '@prisma/client';
+import PrismaPlugin from '@pothos/plugin-prisma';
+import type PrismaTypes from '@pothos/plugin-prisma/generated';
 
-const builder = new SchemaBuilder<{ Context: { db: PrismaClient } }>({});
-type item = {
-  id: number,
-  name: string
-}
-
-const my = builder.objectRef<item>("items")
-
-const prisma = new PrismaClient();
-
-my.implement({
-  description: "en liste af mine items",
-  fields: (t) => ({
-    name: t.exposeString('name'),
-    id: t.exposeID("id")
-  })
-})
-
-builder.queryType({
-  fields: (t) => ({
-    hello: t.string({
-      args: {
-        name: t.arg.string(),
-      },
-      resolve: (parent, { name }) => `hello, ${name || 'World'}`,
-    }),
-    items: t.field({
-      type: [my],
-      resolve: (_, args, { db }) => {
-        return db.item.findMany()
-      }
-    })
-  }),
+export const prisma = new PrismaClient();
+export const builder = new SchemaBuilder<{
+  PrismaTypes: PrismaTypes,
+  Scalars: {
+    Date: {
+      Input: Date;
+      Output: Date;
+    };
+  },
+  Context: {}
+}>({
+  plugins: [PrismaPlugin],
+  prisma: {
+    client: prisma,
+  }
 });
 
-
-
-
-export const schema = builder.toSchema();
+import "./types"

@@ -9,7 +9,12 @@ builder.mutationField("itemTypeCreate", (t) =>
       name: t.arg.string({ required: true }),
       weight: t.arg.int({ required: true }),
     },
-    resolve: (query, _, args) => prisma.itemType.create({ ...query, data: { ...args } }),
+    resolve: (query, _, args, { pubSub }) => {
+      const newItem = prisma.itemType.create({ ...query, data: { ...args } })
+
+      pubSub.publish('ITEMS_UPDATE')
+      return newItem
+    },
   })
 );
 
@@ -28,7 +33,13 @@ builder.mutationField("itemCreate", (t) =>
     args: {
       item: t.arg({ type: inputType, required: true }),
     },
-    resolve: (query, _, args) => prisma.item.create({ ...query, data: { ...args.item } }),
+    resolve: (query, _, args, ctx) => {
+      const item = prisma.item.create({ ...query, data: { ...args.item } })
+
+      ctx.pubSub.publish('ITEMS_UPDATE')
+      return item
+    }
+    ,
   })
 );
 

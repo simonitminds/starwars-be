@@ -2,6 +2,7 @@ import SchemaBuilder from '@pothos/core';
 import { PrismaClient } from '@prisma/client';
 import PrismaPlugin from '@pothos/plugin-prisma';
 import type PrismaTypes from '@pothos/plugin-prisma/generated';
+import { PubSub } from '..';
 
 export const prisma = new PrismaClient();
 export const builder = new SchemaBuilder<{
@@ -12,7 +13,9 @@ export const builder = new SchemaBuilder<{
       Output: Date;
     };
   },
-  Context: {}
+  Context: {
+    pubSub: PubSub
+  }
 }>({
   plugins: [PrismaPlugin],
   prisma: {
@@ -20,4 +23,4 @@ export const builder = new SchemaBuilder<{
   }
 });
 
-import "./types"
+import "./types";
